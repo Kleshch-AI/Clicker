@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Clicker.Level;
+using Configuration;
 using Reactive;
 using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Clicker.UI
+namespace Clicker.UI.Level
 {
     public class LevelUI : MonoBehaviour
     {
@@ -15,6 +16,7 @@ namespace Clicker.UI
             public LevelInfo levelInfo;
 
             public ReactiveTrigger onStartLevel;
+            public ReactiveTrigger onShowSettingsUI;
             public ReactiveProperty<int> secondsPassed;
             public ReactiveProperty<int> targetClicks;
             public TargetUI.Ctx targetCtx;
@@ -24,6 +26,7 @@ namespace Clicker.UI
         }
 
         [SerializeField] private Button start;
+        [SerializeField] private Button settings;
         [SerializeField] private Slider clicksStatSlider;
         [SerializeField] private TextMeshProUGUI clicksStat;
         [SerializeField] private TextMeshProUGUI clicksInfo;
@@ -55,6 +58,7 @@ namespace Clicker.UI
             _ctx.onSpawnTarget.Subscribe(SpawnTarget).AddTo(this);
             _ctx.onLevelEnd.Subscribe(OnLevelEnd).AddTo(this);
 
+            settings.onClick.AddListener(() => _ctx.onShowSettingsUI.Notify());
             start.onClick.AddListener(OnLevelStart);
         }
 
@@ -63,21 +67,21 @@ namespace Clicker.UI
             target.gameObject.SetActive(true);
             start.gameObject.SetActive(false);
             resultText.gameObject.SetActive(false);
-            clicksStatSlider.maxValue = _ctx.levelInfo.clicks;
-            clicksInfo.text = _ctx.levelInfo.clicks.ToString();
-            timerStat.text = _ctx.levelInfo.seconds.ToString();
+            clicksStatSlider.maxValue = _ctx.levelInfo.Clicks;
+            clicksInfo.text = _ctx.levelInfo.Clicks.ToString();
+            timerStat.text = _ctx.levelInfo.Seconds.ToString();
             _ctx.onStartLevel.Notify();
         }
 
         private void UpdateClicks(int clicks)
         {
-            clicksStat.text = $"{clicks}/{_ctx.levelInfo.clicks}";
+            clicksStat.text = $"{clicks}/{_ctx.levelInfo.Clicks}";
             clicksStatSlider.value = clicks;
         }
 
         private void UpdateTimer(int secondsPassed)
         {
-            timerStat.text = $"{_ctx.levelInfo.seconds - secondsPassed}";
+            timerStat.text = $"{_ctx.levelInfo.Seconds - secondsPassed}";
         }
 
         private void SpawnTarget(Vector2 factor)

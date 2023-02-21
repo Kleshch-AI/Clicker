@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Configuration;
 using Reactive;
+using Sirenix.Utilities;
 using UniRx;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -11,7 +14,7 @@ namespace Clicker.Level.Bonuses
     {
         public struct Ctx
         {
-            public List<BonusSpawnInfo> bonuses;
+            public IReadOnlyList<BonusSpawnInfo> bonuses;
 
             public ReactiveTrigger<Bonus, Vector2> onSpawnBonus;
             public ReactiveTrigger<Bonus> onHideBonus;
@@ -39,8 +42,8 @@ namespace Clicker.Level.Bonuses
             timersSpawned = new Dictionary<Bonus, int>();
             _ctx.bonuses.ForEach(b =>
             {
-                timersActivated.Add(b.type, 0);
-                timersSpawned.Add(b.type, 0);
+                timersActivated.Add(b.Type, 0);
+                timersSpawned.Add(b.Type, 0);
             });
 
             _disposables = new CompositeDisposable();
@@ -53,7 +56,7 @@ namespace Clicker.Level.Bonuses
         {
             foreach (var info in _ctx.bonuses)
             {
-                var type = info.type;
+                var type = info.Type;
                 Debug.Log(type);
                 if (timersSpawned[type] > 0) // если бонус заспавнен, но не активирован
                 {
@@ -72,7 +75,7 @@ namespace Clicker.Level.Bonuses
                 }
 
                 var rand = Random.value;
-                if (rand <= info.chance)
+                if (rand <= info.Chance)
                     SpawnBonus(type);
             }
         }
@@ -91,7 +94,8 @@ namespace Clicker.Level.Bonuses
         private void OnClickBonus(Bonus type)
         {
             timersSpawned[type] = 0;
-            timersActivated[type] = _ctx.bonuses.Find(b => b.type == type).seconds;
+            var bonuses = _ctx.bonuses;
+            timersActivated[type] = bonuses.ToList().Find(b => b.Type == type).Seconds;
 
             _ctx.onHideBonus.Notify(type);
             _ctx.onBonusSetActive.Notify(type, true);

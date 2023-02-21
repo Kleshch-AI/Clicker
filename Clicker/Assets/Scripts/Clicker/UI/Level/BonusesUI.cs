@@ -4,7 +4,7 @@ using Reactive;
 using UniRx;
 using UnityEngine;
 
-namespace Clicker.UI
+namespace Clicker.UI.Level
 {
     public class BonusesUI : MonoBehaviour
     {

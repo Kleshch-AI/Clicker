@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Clicker.Channels;
 using Clicker.Level;
 using Clicker.Level.Bonuses;
 using Clicker.UI;
+using Clicker.UI.Level;
+using Configuration;
 using Reactive;
 using UI;
 using UniRx;
@@ -16,61 +19,53 @@ namespace Clicker
 
         public GameManager(UIManager uiManager)
         {
-            var levelInfo = new LevelInfo
-            {
-                clicks = 20,
-                seconds = 20,
-                bonuses = new List<BonusSpawnInfo>
-                {
-                    new BonusSpawnInfo { type = Bonus.Size, chance = 0.2f, seconds = 5 },
-                    new BonusSpawnInfo { type = Bonus.Tap, chance = 0.2f, seconds = 5 },
-                    new BonusSpawnInfo { type = Bonus.Stop, chance = 0.2f, seconds = 5 }
-                }
-            };
+            // var levelInfo = new LevelInfo
+            // {
+            //     clicks = 20,
+            //     seconds = 20,
+            //     bonuses = new List<BonusSpawnInfo>
+            //     {
+            //         new BonusSpawnInfo { type = Bonus.Size, chance = 0.2f, seconds = 5 },
+            //         new BonusSpawnInfo { type = Bonus.Tap, chance = 0.2f, seconds = 5 },
+            //         new BonusSpawnInfo { type = Bonus.Stop, chance = 0.2f, seconds = 5 }
+            //     }
+            // };
 
-            ReactiveTrigger<Vector2> onSpawnTarget = new ReactiveTrigger<Vector2>();
-            ReactiveProperty<int> secondsPassed = new ReactiveProperty<int>();
-            ReactiveProperty<int> targetClicks = new ReactiveProperty<int>();
-            ReactiveTrigger onTargetClick = new ReactiveTrigger();
-            ReactiveTrigger onStartLevel = new ReactiveTrigger();
-            ReactiveTrigger<bool> onLevelEnd = new ReactiveTrigger<bool>();
-            ReactiveTrigger<Bonus, Vector2> onSpawnBonus = new ReactiveTrigger<Bonus, Vector2>();
-            ReactiveTrigger<Bonus> onClickBonus = new ReactiveTrigger<Bonus>();
-            ReactiveTrigger<float> onChangeTargetSize = new ReactiveTrigger<float>();
-            ReactiveTrigger<Bonus> onHideBonus = new ReactiveTrigger<Bonus>();
-            ReactiveTrigger<int> onSetClickWeight = new ReactiveTrigger<int>();
-            ReactiveTrigger<Bonus, bool> onBonusSetActive = new ReactiveTrigger<Bonus, bool>();
-            ReactiveTrigger<bool> onLockTargetMove = new ReactiveTrigger<bool>();
+            var levelsConfig = Resources.Load<LevelsConfig>("LevelsConfig");
+            var levelInfo = levelsConfig.GetById(1);
+
+            var levelChannel = new LevelChannel();
+            var uiChannel = new UIChannel();
 
             var clickerLevelPm = new ClickerLevelPm(new ClickerLevelPm.Ctx
             {
                 levelInfo = levelInfo,
 
-                onSpawnTarget = onSpawnTarget,
-                secondsPassed = secondsPassed,
-                targetClicks = targetClicks,
+                onSpawnTarget = levelChannel.onSpawnTarget,
+                secondsPassed = levelChannel.secondsPassed,
+                targetClicks = levelChannel.targetClicks,
 
-                onSetClickWeight = onSetClickWeight,
-                onLockTargetMove = onLockTargetMove,
-                onTargetClick = onTargetClick,
-                onStartLevel = onStartLevel,
-                onLevelEnd = onLevelEnd,
+                onSetClickWeight = levelChannel.onSetClickWeight,
+                onLockTargetMove = levelChannel.onLockTargetMove,
+                onTargetClick = levelChannel.onTargetClick,
+                onStartLevel = levelChannel.onStartLevel,
+                onLevelEnd = levelChannel.onLevelEnd,
             });
             _disposables.Add(clickerLevelPm);
 
             var bonusesPm = new BonusesPm(new BonusesPm.Ctx
             {
-                bonuses = levelInfo.bonuses,
+                bonuses = levelInfo.Bonuses,
 
-                onSpawnBonus = onSpawnBonus,
-                onChangeTargetSize = onChangeTargetSize,
-                onSetClickWeight = onSetClickWeight,
-                onLockTargetMove = onLockTargetMove,
-                onBonusSetActive = onBonusSetActive,
+                onSpawnBonus = levelChannel.onSpawnBonus,
+                onChangeTargetSize = levelChannel.onChangeTargetSize,
+                onSetClickWeight = levelChannel.onSetClickWeight,
+                onLockTargetMove = levelChannel.onLockTargetMove,
+                onBonusSetActive = levelChannel.onBonusSetActive,
 
-                secondsPassed = secondsPassed,
-                onClickBonus = onClickBonus,
-                onHideBonus = onHideBonus,
+                secondsPassed = levelChannel.secondsPassed,
+                onClickBonus = levelChannel.onClickBonus,
+                onHideBonus = levelChannel.onHideBonus,
             });
             _disposables.Add(bonusesPm);
 
@@ -80,25 +75,27 @@ namespace Clicker
                 {
                     levelInfo = levelInfo,
 
-                    onStartLevel = onStartLevel,
-                    secondsPassed = secondsPassed,
-                    targetClicks = targetClicks,
-                    onSpawnTarget = onSpawnTarget,
-                    onLevelEnd = onLevelEnd,
+                    onStartLevel = levelChannel.onStartLevel,
+                    onShowSettingsUI = uiChannel.onShowSettingsUI,
+                    secondsPassed = levelChannel.secondsPassed,
+                    targetClicks = levelChannel.targetClicks,
+                    onSpawnTarget = levelChannel.onSpawnTarget,
+                    onLevelEnd = levelChannel.onLevelEnd,
                     targetCtx = new TargetUI.Ctx
                     {
-                        onTargetClick = onTargetClick,
-                        onChangeTargetSize = onChangeTargetSize,
+                        onTargetClick = levelChannel.onTargetClick,
+                        onChangeTargetSize = levelChannel.onChangeTargetSize,
                     },
                     bonusesCtx = new BonusesUI.Ctx
                     {
-                        onBonusSetActive = onBonusSetActive,
-                        onClickBonus = onClickBonus,
-                        onSpawnBonus = onSpawnBonus,
-                        onHideBonus = onHideBonus,
-                        onLevelEnd = onLevelEnd,
+                        onBonusSetActive = levelChannel.onBonusSetActive,
+                        onClickBonus = levelChannel.onClickBonus,
+                        onSpawnBonus = levelChannel.onSpawnBonus,
+                        onHideBonus = levelChannel.onHideBonus,
+                        onLevelEnd = levelChannel.onLevelEnd,
                     }
-                }
+                },
+                uiChannel = uiChannel
             });
         }
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Clicker.UI
+namespace Clicker.UI.Level
 {
     public class ClickUI : MonoBehaviour, IPointerDownHandler
     {

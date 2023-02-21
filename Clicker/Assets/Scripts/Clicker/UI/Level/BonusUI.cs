@@ -1,7 +1,7 @@
 ﻿using Clicker.Level.Bonuses;
 using Reactive;
 
-namespace Clicker.UI
+namespace Clicker.UI.Level
 {
     public class BonusUI : ClickUI
     {

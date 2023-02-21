@@ -1,4 +1,5 @@
 ﻿using System;
+using Configuration;
 using Reactive;
 using UniRx;
 using UnityEngine;
@@ -64,7 +65,7 @@ namespace Clicker.Level
                 return;
 
             _ctx.targetClicks.Value += _clickWeight;
-            if (_ctx.targetClicks.Value >= _ctx.levelInfo.clicks)
+            if (_ctx.targetClicks.Value >= _ctx.levelInfo.Clicks)
             {
                 OnWin();
                 return;
@@ -77,7 +78,7 @@ namespace Clicker.Level
         private void TickTimer()
         {
             _ctx.secondsPassed.Value++;
-            if (_ctx.secondsPassed.Value >= _ctx.levelInfo.seconds)
+            if (_ctx.secondsPassed.Value >= _ctx.levelInfo.Seconds)
                 OnFail();
         }
 
