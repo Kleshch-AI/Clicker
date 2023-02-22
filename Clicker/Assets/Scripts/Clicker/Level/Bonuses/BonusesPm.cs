@@ -57,7 +57,6 @@ namespace Clicker.Level.Bonuses
             foreach (var info in _ctx.bonuses)
             {
                 var type = info.Type;
-                Debug.Log(type);
                 if (timersSpawned[type] > 0) // если бонус заспавнен, но не активирован
                 {
                     timersSpawned[type]--;

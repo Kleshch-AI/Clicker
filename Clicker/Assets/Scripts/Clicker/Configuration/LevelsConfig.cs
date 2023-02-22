@@ -9,13 +9,17 @@ namespace Configuration
     [Serializable]
     public class LevelInfo
     {
+        [SerializeField] private string title;
         [SerializeField] private int clicks;
         [SerializeField] private int seconds;
         [SerializeField] [TableList] private List<BonusSpawnInfo> bonuses;
-        
+        [SerializeField] private Sprite bg;
+
+        public string Title => title;
         public int Clicks => clicks;
         public int Seconds => seconds;
         public IReadOnlyList<BonusSpawnInfo> Bonuses => bonuses;
+        public Sprite Bg => bg;
     }
 
     [Serializable]
@@ -31,13 +35,15 @@ namespace Configuration
     }
 
     [CreateAssetMenu(fileName = "LevelsConfig", menuName = "Clicker/Configs/Levels")]
-    public class LevelsConfig : SerializedScriptableObject
+    public class LevelsConfig : ScriptableObject
     {
-        [SerializeField] private Dictionary<int, LevelInfo> levels;
+        [SerializeField] private List<LevelInfo> levels;
+
+        public int MaxLevelId => levels.Count - 1;
 
         public LevelInfo GetById(int id)
         {
-            if (levels.ContainsKey(id))
+            if (id >= 0 && levels.Count > id)
                 return levels[id];
 
             return null;

@@ -29,7 +29,6 @@ namespace Clicker.UI.Level
 
         private void ChangeSize(float factor)
         {
-            Debug.Log(factor);
             _rt.sizeDelta = new Vector2(_rt.sizeDelta.x * factor, _rt.sizeDelta.y * factor);
         }
     }

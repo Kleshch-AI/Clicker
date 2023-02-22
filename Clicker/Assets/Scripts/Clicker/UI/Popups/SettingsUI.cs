@@ -1,4 +1,4 @@
-﻿namespace Clicker.UI
+﻿namespace Clicker.UI.Popups
 {
     public class SettingsUI : BasePopupUI
     {

@@ -7,7 +7,7 @@ namespace Clicker.UI.Level
     {
         protected RectTransform _rt;
         
-        private void Start()
+        private void Awake()
         {
             _rt = transform as RectTransform;
         }

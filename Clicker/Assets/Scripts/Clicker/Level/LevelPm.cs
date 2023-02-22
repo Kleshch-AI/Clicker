@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Clicker.Level
 {
-    public class ClickerLevelPm : IDisposable
+    public class LevelPm : IDisposable
     {
         public struct Ctx
         {
@@ -31,7 +31,7 @@ namespace Clicker.Level
         private int _clickWeight = 1;
         private bool _isMoveLocked = false;
 
-        public ClickerLevelPm(Ctx ctx)
+        public LevelPm(Ctx ctx)
         {
             _ctx = ctx;
 

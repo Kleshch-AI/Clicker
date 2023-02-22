@@ -12,160 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 872befac45d84646827b1a499f70c687, type: 3}
   m_Name: LevelsConfig
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: levels
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[Configuration.LevelInfo,
-        Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 7
-      Data: 2|Configuration.LevelInfo, Assembly-CSharp
-    - Name: clicks
-      Entry: 3
-      Data: 20
-    - Name: seconds
-      Entry: 3
-      Data: 20
-    - Name: bonuses
-      Entry: 7
-      Data: 3|System.Collections.Generic.List`1[[Configuration.BonusSpawnInfo, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 4|Configuration.BonusSpawnInfo, Assembly-CSharp
-    - Name: type
-      Entry: 3
-      Data: 0
-    - Name: chance
-      Entry: 4
-      Data: 0.2
-    - Name: seconds
-      Entry: 3
-      Data: 5
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 5|Configuration.BonusSpawnInfo, Assembly-CSharp
-    - Name: type
-      Entry: 3
-      Data: 1
-    - Name: chance
-      Entry: 4
-      Data: 0.2
-    - Name: seconds
-      Entry: 3
-      Data: 5
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 6|Configuration.BonusSpawnInfo, Assembly-CSharp
-    - Name: type
-      Entry: 3
-      Data: 2
-    - Name: chance
-      Entry: 4
-      Data: 0.2
-    - Name: seconds
-      Entry: 3
-      Data: 5
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 7
-      Data: 7|Configuration.LevelInfo, Assembly-CSharp
-    - Name: clicks
-      Entry: 3
-      Data: 25
-    - Name: seconds
-      Entry: 3
-      Data: 30
-    - Name: bonuses
-      Entry: 7
-      Data: 8|System.Collections.Generic.List`1[[Configuration.BonusSpawnInfo, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 9|Configuration.BonusSpawnInfo, Assembly-CSharp
-    - Name: type
-      Entry: 3
-      Data: 2
-    - Name: chance
-      Entry: 4
-      Data: 0.4
-    - Name: seconds
-      Entry: 3
-      Data: 7
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+  levels:
+  - title: Level 1
+    clicks: 20
+    seconds: 20
+    bonuses:
+    - type: 0
+      chance: 0.2
+      seconds: 5
+    - type: 1
+      chance: 0.25
+      seconds: 5
+    - type: 2
+      chance: 0.2
+      seconds: 5
+    bg: {fileID: 21300000, guid: e4106444ba49b0f439a6cf157d075042, type: 3}
+  - title: Level 2
+    clicks: 15
+    seconds: 20
+    bonuses:
+    - type: 0
+      chance: 0.2
+      seconds: 4
+    bg: {fileID: 21300000, guid: 345da599aa232ab48b16d4d36c1e0a86, type: 3}
+  - title: Level 3
+    clicks: 30
+    seconds: 25
+    bonuses:
+    - type: 0
+      chance: 0.3
+      seconds: 4
+    - type: 2
+      chance: 0.2
+      seconds: 6
+    bg: {fileID: 21300000, guid: 25871ed2c7f0eaf45a552fd43cb3b825, type: 3}

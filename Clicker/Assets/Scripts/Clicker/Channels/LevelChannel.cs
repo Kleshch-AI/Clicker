@@ -7,6 +7,7 @@ namespace Clicker.Channels
 {
     public class LevelChannel
     {
+        public ReactiveTrigger<int> onClickStartLevel = new ReactiveTrigger<int>();
         public ReactiveTrigger<Vector2> onSpawnTarget = new ReactiveTrigger<Vector2>();
         public ReactiveProperty<int> secondsPassed = new ReactiveProperty<int>();
         public ReactiveProperty<int> targetClicks = new ReactiveProperty<int>();

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Clicker.Level;
-using Configuration;
 using Reactive;
 using TMPro;
 using UniRx;
@@ -13,25 +12,26 @@ namespace Clicker.UI.Level
     {
         public struct Ctx
         {
-            public LevelInfo levelInfo;
+            public int clicks;
+            public int seconds;
 
-            public ReactiveTrigger onStartLevel;
+            public TargetUI.Ctx targetCtx;
+            public BonusesUI.Ctx bonusesCtx;
+
             public ReactiveTrigger onShowSettingsUI;
             public ReactiveProperty<int> secondsPassed;
             public ReactiveProperty<int> targetClicks;
-            public TargetUI.Ctx targetCtx;
+            public ReactiveTrigger<bool, Return<Task>> onShowLevelResults;
+            public IReadOnlyReactiveTrigger onStartLevel;
             public IReadOnlyReactiveTrigger<Vector2> onSpawnTarget;
             public IReadOnlyReactiveTrigger<bool> onLevelEnd;
-            public BonusesUI.Ctx bonusesCtx;
         }
 
-        [SerializeField] private Button start;
         [SerializeField] private Button settings;
         [SerializeField] private Slider clicksStatSlider;
         [SerializeField] private TextMeshProUGUI clicksStat;
         [SerializeField] private TextMeshProUGUI clicksInfo;
         [SerializeField] private TextMeshProUGUI timerStat;
-        [SerializeField] private TextMeshProUGUI resultText;
         [SerializeField] private TargetUI target;
         [SerializeField] private RectTransform gameField;
         [SerializeField] private BonusesUI bonuses;
@@ -50,38 +50,33 @@ namespace Clicker.UI.Level
 
             targetRt = target.transform as RectTransform;
             target.gameObject.SetActive(false);
-            start.gameObject.SetActive(true);
-            resultText.gameObject.SetActive(false);
+
+            settings.onClick.AddListener(() => _ctx.onShowSettingsUI.Notify());
 
             _ctx.targetClicks.Subscribe(UpdateClicks).AddTo(this);
             _ctx.secondsPassed.Subscribe(UpdateTimer).AddTo(this);
             _ctx.onSpawnTarget.Subscribe(SpawnTarget).AddTo(this);
             _ctx.onLevelEnd.Subscribe(OnLevelEnd).AddTo(this);
-
-            settings.onClick.AddListener(() => _ctx.onShowSettingsUI.Notify());
-            start.onClick.AddListener(OnLevelStart);
+            _ctx.onStartLevel.Subscribe(OnLevelStart).AddTo(this);
         }
 
         private void OnLevelStart()
         {
             target.gameObject.SetActive(true);
-            start.gameObject.SetActive(false);
-            resultText.gameObject.SetActive(false);
-            clicksStatSlider.maxValue = _ctx.levelInfo.Clicks;
-            clicksInfo.text = _ctx.levelInfo.Clicks.ToString();
-            timerStat.text = _ctx.levelInfo.Seconds.ToString();
-            _ctx.onStartLevel.Notify();
+            clicksStatSlider.maxValue = _ctx.clicks;
+            clicksInfo.text = _ctx.clicks.ToString();
+            timerStat.text = _ctx.seconds.ToString();
         }
 
         private void UpdateClicks(int clicks)
         {
-            clicksStat.text = $"{clicks}/{_ctx.levelInfo.Clicks}";
+            clicksStat.text = $"{clicks}/{_ctx.clicks}";
             clicksStatSlider.value = clicks;
         }
 
         private void UpdateTimer(int secondsPassed)
         {
-            timerStat.text = $"{_ctx.levelInfo.Seconds - secondsPassed}";
+            timerStat.text = $"{_ctx.seconds - secondsPassed}";
         }
 
         private void SpawnTarget(Vector2 factor)
@@ -92,11 +87,10 @@ namespace Clicker.UI.Level
         private async void OnLevelEnd(bool isWin)
         {
             target.gameObject.SetActive(false);
-            resultText.text = isWin ? "You win!" : "You lose!";
-            resultText.gameObject.SetActive(true);
-            await Task.Delay(1500);
-            resultText.gameObject.SetActive(false);
-            start.gameObject.SetActive(true);
+            var ret = new Return<Task>();
+            _ctx.onShowLevelResults.Notify(isWin, ret);
+            await ret.Value;
+            Destroy(gameObject);
         }
     }
 }
