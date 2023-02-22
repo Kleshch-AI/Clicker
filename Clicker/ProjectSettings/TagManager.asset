@@ -41,9 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: MainUI
+    uniqueID: 3367526743
+    locked: 0
   - name: LevelUI
     uniqueID: 1662314603
     locked: 0
-  - name: MainUI
-    uniqueID: 3367526743
+  - name: SettingsUI
+    uniqueID: 608137453
     locked: 0

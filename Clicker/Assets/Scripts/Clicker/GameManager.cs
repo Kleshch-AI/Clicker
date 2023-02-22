@@ -1,6 +1,7 @@
 ﻿using System;
 using Clicker.Channels;
 using Clicker.Level;
+using Clicker.Settings;
 using Configuration;
 using UI;
 using UniRx;
@@ -10,7 +11,7 @@ namespace Clicker
 {
     public class GameManager : IDisposable
     {
-        private readonly CompositeDisposable _disp;
+        private readonly CompositeDisposable _disposables;
 
         public GameManager(UIManager uiManager)
         {
@@ -18,8 +19,9 @@ namespace Clicker
 
             var levelChannel = new LevelChannel();
             var uiChannel = new UIChannel();
+            var settingsChannel = new SettingsChannel();
 
-            _disp = new CompositeDisposable();
+            _disposables = new CompositeDisposable();
 
             var levelManager = new LevelManager(new LevelManager.Ctx
             {
@@ -29,19 +31,26 @@ namespace Clicker
                 onClickStartLevel = uiChannel.onClickStartLevel,
                 onShowLevelUI = uiChannel.onShowLevelUI,
             });
-            _disp.Add(levelManager);
+            _disposables.Add(levelManager);
+
+            var settingsPm = new SettingsPm(new SettingsPm.Ctx
+            {
+                settingsChannel = settingsChannel
+            });
+            _disposables.Add(settingsPm);
 
             uiManager.SetCtx(new UIManager.Ctx
             {
                 levelsConfig = levelsConfig,
                 uiChannel = uiChannel,
-                levelChannel = levelChannel
+                levelChannel = levelChannel,
+                settingsChannel = settingsChannel
             });
         }
 
         public void Dispose()
         {
-            _disp?.Dispose();
+            _disposables?.Dispose();
         }
     }
 }

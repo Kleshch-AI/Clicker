@@ -18,6 +18,7 @@ namespace UI
             public LevelsConfig levelsConfig;
             public UIChannel uiChannel;
             public LevelChannel levelChannel;
+            public SettingsChannel settingsChannel;
         }
 
         [SerializeField] private MainMenuUI mainMenu;
@@ -86,7 +87,10 @@ namespace UI
         private void ShowSettings()
         {
             var settings = Instantiate(settingsUI, transform);
-            settings.SetCtx(new SettingsUI.Ctx());
+            settings.SetCtx(new SettingsUI.Ctx
+            {
+                settingsChannel = _ctx.settingsChannel,
+            });
             settings.Show();
         }
 
@@ -100,7 +104,6 @@ namespace UI
         private async Task ShowLevelResults(bool isWin)
         {
             var levelResults = Instantiate(levelResultsUI, transform);
-            // await levelResults.Show(isWin);
             levelResults.Show(isWin);
             await Task.Delay(2000);
             levelResults.Hide();
