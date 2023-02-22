@@ -14,6 +14,7 @@ namespace Clicker.UI.Level
         {
             public int clicks;
             public int seconds;
+            public Sprite bg;
 
             public TargetUI.Ctx targetCtx;
             public BonusesUI.Ctx bonusesCtx;
@@ -27,6 +28,7 @@ namespace Clicker.UI.Level
             public IReadOnlyReactiveTrigger<bool> onLevelEnd;
         }
 
+        [SerializeField] private Image bg;
         [SerializeField] private Button settings;
         [SerializeField] private Slider clicksStatSlider;
         [SerializeField] private TextMeshProUGUI clicksStat;
@@ -42,7 +44,7 @@ namespace Clicker.UI.Level
         public void SetCtx(Ctx ctx)
         {
             _ctx = ctx;
-
+            
             _ctx.bonusesCtx.SetGameFieldSize(gameField.rect.size);
             bonuses.SetCtx(_ctx.bonusesCtx);
 
@@ -50,6 +52,8 @@ namespace Clicker.UI.Level
 
             targetRt = target.transform as RectTransform;
             target.gameObject.SetActive(false);
+
+            bg.sprite = _ctx.bg;
 
             settings.onClick.AddListener(() => _ctx.onShowSettingsUI.Notify());
 

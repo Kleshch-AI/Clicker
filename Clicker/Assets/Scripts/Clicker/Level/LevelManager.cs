@@ -16,7 +16,7 @@ namespace Clicker.Level
             
             public LevelChannel levelChannel;
             public ReactiveTrigger<int> onClickStartLevel;
-            public ReactiveTrigger<int, int> onShowLevelUI;
+            public ReactiveTrigger<LevelInfo> onShowLevelUI;
         }
 
         private readonly Ctx _ctx;
@@ -59,7 +59,7 @@ namespace Clicker.Level
             if (levelInfo.Bonuses?.Count > 0)
                 StartBonuses(levelInfo);
             
-            _ctx.onShowLevelUI.Notify(levelInfo.Clicks, levelInfo.Seconds); //todo await show
+            _ctx.onShowLevelUI.Notify(levelInfo);
             _ctx.levelChannel.onStartLevel.Notify();
         }
 

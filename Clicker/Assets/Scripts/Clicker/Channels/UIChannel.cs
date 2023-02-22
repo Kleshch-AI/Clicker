@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Clicker.UI.Popups.LevelInfo;
+using Configuration;
 using Reactive;
 
 namespace Clicker.Channels
@@ -13,8 +14,6 @@ namespace Clicker.Channels
         /// <param name="1. int">level id</param>
         public ReactiveTrigger<int> onClickStartLevel = new ReactiveTrigger<int>();
 
-        /// <param name="1. int">clicks</param>
-        /// <param name="2. int">seconds</param>
-        public ReactiveTrigger<int, int> onShowLevelUI = new ReactiveTrigger<int, int>();
+        public ReactiveTrigger<LevelInfo> onShowLevelUI = new ReactiveTrigger<LevelInfo>();
     }
 }

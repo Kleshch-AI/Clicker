@@ -51,12 +51,13 @@ namespace UI
             ctx.uiChannel.onShowLevelResults.Subscribe((isWin, ret) => ret.Value = ShowLevelResults(isWin)).AddTo(this);
         }
 
-        private void ShowLevel(int clicks, int seconds)
+        private void ShowLevel(LevelInfo info)
         {
             var levelUICtx = new LevelUI.Ctx
             {
-                clicks = clicks,
-                seconds = seconds,
+                clicks = info.Clicks,
+                seconds = info.Seconds,
+                bg = info.Bg,
 
                 onStartLevel = _ctx.levelChannel.onStartLevel,
                 onShowSettingsUI = _ctx.uiChannel.onShowSettingsUI,

@@ -570,6 +570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e916bd5da554dbca86a174a04a1e1e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bg: {fileID: 715880293363339725}
   settings: {fileID: 715880292988291237}
   clicksStatSlider: {fileID: 715880291324237423}
   clicksStat: {fileID: 715880293300747502}
